@@ -221,6 +221,10 @@ def iconv_configure_flags
         end if dirs
       end
 
+      puts '*' * 80
+      puts idirs.map { |dir| '-I' + dir }.join(' ')
+      puts '*' * 80
+
       return [
         '--with-iconv=yes',
         *("CPPFLAGS=#{idirs.map { |dir| '-I' + dir }.join(' ')}" if idirs),
@@ -228,6 +232,16 @@ def iconv_configure_flags
       ]
     end
   end
+
+  # # Recent OpenBSD puts libiconv in "nonstandard" locations
+  # # Valid at least since OpenBSD 5.8
+  # if openbsd?
+  #   return [
+  #     '--with-iconv=yes',
+  #     *("CPPFLAGS=#{idirs.map { |dir| '-I' + dir }.join(' ')}" if idirs),
+  #     *("LDFLAGS=#{ldirs.map { |dir| '-L' + dir }.join(' ')}" if ldirs),
+  #   ]
+  # end
 
   if have_iconv?
     return ['--with-iconv=yes']
